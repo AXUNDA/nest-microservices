@@ -17,7 +17,7 @@ export class AbstractRepository<TDocument extends AbstractDocument> {
       .findOne(filterQuery)
       .lean<TDocument>(true);
     if (!document) {
-      this.logger.warn('document not found wit query', filterQuery);
+      this.logger.warn('document not found with query', filterQuery);
       throw new NotFoundException('document not found');
     }
     return document;

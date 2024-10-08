@@ -6,32 +6,37 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ReservationService } from './reservations.service';
 import { CreateReservationDto } from './reservation/dto/create-reservation.dto';
 import { UpdateReservationDto } from './reservation/dto/update-reservation.dto';
-
+import { GetCurrentUser, JwtAuthGuard, userDto } from '@app/common';
 @Controller('reservations')
+@UseGuards(JwtAuthGuard)
 export class ReservationsController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post()
-  create(@Body() createReservationDto: CreateReservationDto) {
-    return this.reservationService.create(createReservationDto);
+  async create(
+    @Body() createReservationDto: CreateReservationDto,
+    @GetCurrentUser() user: userDto,
+  ) {
+    return this.reservationService.create(createReservationDto, user._id);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.reservationService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.reservationService.findOne(id);
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateReservationDto: UpdateReservationDto,
   ) {
@@ -39,7 +44,7 @@ export class ReservationsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.reservationService.remove(id);
   }
 }
