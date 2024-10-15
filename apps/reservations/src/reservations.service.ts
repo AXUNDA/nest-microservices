@@ -13,13 +13,14 @@ export class ReservationService {
     @Inject(PAYMENTS_SERVICE) private readonly paymentsService: ClientProxy,
   ) {}
   async create(createReservationDto: CreateReservationDto, userId: string) {
-    this.paymentsService
+    return this.paymentsService
       .send('create_charge', createReservationDto.charge)
       .pipe(
-        tap((res) => (createReservationDto.invoiceId = res.id)),
-        map(() => {
+        // tap((res) => (createReservationDto.invoiceId = res.id)),
+        map((res) => {
           return this.reservationsRepository.create({
             ...createReservationDto,
+            invoiceId: res.id,
             userId,
             timeStamp: new Date(),
           });

@@ -9,7 +9,7 @@ export class PaymentsService {
     apiVersion: '2024-09-30.acacia',
   });
   constructor(private readonly config: ConfigService) {}
-  async createCharge({ card, amount }: create_charge) {
+  async createCharge({ amount }: create_charge) {
     // const PaymentMethod = await this.stripe.paymentMethods.create({
     //   type: 'card',
     //   card,
@@ -21,7 +21,7 @@ export class PaymentsService {
       // confirm: true,
       // payment_method_types: ['card'],
       amount: amount * 100,
-      currency: 'gbp',
+      currency: 'usd',
       payment_method: 'pm_card_visa',
     });
 
