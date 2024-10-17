@@ -11,16 +11,20 @@ export class AuthService {
     private jwt: JwtService,
   ) {}
   async login(user: UserDocument, res: Response) {
-    const payload = {
-      userId: user._id.toHexString(),
-    };
-    const expires = new Date();
+    try {
+      const payload = {
+        userId: user._id.toHexString(),
+      };
+      const expires = new Date();
 
-    expires.setSeconds(
-      expires.getSeconds() + this.config.get('JWT_EXPIRATION'),
-    );
+      expires.setSeconds(
+        expires.getSeconds() + this.config.get('JWT_EXPIRATION'),
+      );
 
-    const token = this.jwt.sign(payload);
-    res.cookie('Authentication', token, { expires });
+      const token = this.jwt.sign(payload);
+      res.cookie('Authentication', token, { expires });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
