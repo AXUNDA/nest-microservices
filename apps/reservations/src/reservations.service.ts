@@ -13,6 +13,14 @@ export class ReservationService {
     @Inject(PAYMENTS_SERVICE) private readonly paymentsService: ClientProxy,
   ) {}
   async create(createReservationDto: CreateReservationDto, user: userDto) {
+    // const payment_details = await this.paymentsService
+    //   .send('create_charge', {
+    //     ...createReservationDto.charge,
+    //     email: user.email,
+    //   })
+    //   .toPromise();
+    // console.log({ payment_details });
+    // return { payment_details };
     return this.paymentsService
       .send('create_charge', {
         ...createReservationDto.charge,
